@@ -1,3 +1,10 @@
 spring:
   application:
     name: task-manager
+  datasource:
+    url: jdbc:postgresql://localhost:5432/taskmanager
+    username: postgres
+    password: haslo
+  jpa:
+    hibernate:
+      ddl-auto: create

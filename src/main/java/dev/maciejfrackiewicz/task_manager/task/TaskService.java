@@ -1,7 +1,6 @@
 package dev.maciejfrackiewicz.task_manager.task;
-
-import dev.maciejfrackiewicz.task_manager.task.Task;
-import dev.maciejfrackiewicz.task_manager.task.TaskRepository;
+import dev.maciejfrackiewicz.task_manager.task.dto.CreateTaskRequest;
+import dev.maciejfrackiewicz.task_manager.task.dto.TaskResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,24 +12,34 @@ import java.util.UUID;
 public class TaskService {
     private final TaskRepository taskRepository;
 
-    public Task addTask(Task task)
+    public TaskResponse addTask(CreateTaskRequest task)
     {
-        return taskRepository.save(task);
+        return toResponse(taskRepository.save(toEntity(task)));
     }
 
-    public Optional<Task> getTaskById(UUID id)
+    public Optional<TaskResponse> getTaskById(UUID id)
     {
-        return taskRepository.findById(id);
+        return taskRepository.findById(id).map(this::toResponse);
     }
 
-    public Task updateTask(Task task)
+    public TaskResponse updateTask(CreateTaskRequest request)
     {
-        return taskRepository.save(task);
+        return toResponse(taskRepository.save(toEntity(request)));
     }
 
     public void deleteTask(UUID id)
     {
         taskRepository.deleteById(id);
+    }
+
+    private TaskResponse toResponse(Task task)
+    {
+        return new TaskResponse(task.getId(), task.getTitle(), task.getDescription(), task.getCategoryId(), task.getStatus(), task.getDeadline(), task.getCreatedAt());
+    }
+
+    private Task toEntity(CreateTaskRequest request)
+    {
+        return Task.builder().categoryId(request.categoryId()).title(request.title()).description(request.description()).status(request.status()).deadline(request.deadline()).build();
     }
 
 }

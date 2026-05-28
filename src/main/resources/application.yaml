@@ -8,3 +8,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+jwt:
+  secret: ${JWT_SECRET:local-dev-secret-key-change-in-production-min-256-bits}
+  expiration: 86400000

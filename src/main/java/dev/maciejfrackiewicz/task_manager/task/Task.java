@@ -29,4 +29,9 @@ public class Task {
     private LocalDateTime deadline;
     private LocalDateTime createdAt;
 
+    @PrePersist
+    protected void onCreate(){
+        this.createdAt = LocalDateTime.now();
+    }
+
 }

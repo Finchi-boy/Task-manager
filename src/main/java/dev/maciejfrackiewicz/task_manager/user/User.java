@@ -28,4 +28,9 @@ public class User {
     private String username;
     private LocalDateTime createdAt;
 
+    @PrePersist
+    protected void onCreate(){
+        this.createdAt = LocalDateTime.now();
+    }
+
 }

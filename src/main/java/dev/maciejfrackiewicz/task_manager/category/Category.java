@@ -25,4 +25,9 @@ public class Category {
     private String name;
     private String color;
     private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate(){
+        this.createdAt = LocalDateTime.now();
+    }
 }

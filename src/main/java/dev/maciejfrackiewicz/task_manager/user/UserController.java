@@ -24,11 +24,6 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
-        UserResponse newUser = userService.addUser(request);
-        return ResponseEntity.created(URI.create("api/users/" + newUser.id())).body(newUser);
-    }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(@PathVariable UUID id, @Valid @RequestBody CreateUserRequest request) {

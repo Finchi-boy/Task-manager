@@ -12,20 +12,21 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CategoryService {
     private final CategoryRepository categoryRepository;
+    private final CategoryMapper categoryMapper;
 
     public CategoryResponse addCategory(CreateCategoryRequest request)
     {
-        return toResponse(categoryRepository.save(toEntity(request)));
+        return categoryMapper.toResponse(categoryRepository.save(categoryMapper.toEntity(request)));
     }
 
     public Optional<CategoryResponse> getCategoryById(UUID id)
     {
-        return categoryRepository.findById(id).map(this::toResponse);
+        return categoryRepository.findById(id).map(categoryMapper::toResponse);
     }
 
     public CategoryResponse updateCategory(CreateCategoryRequest request)
     {
-        return toResponse(categoryRepository.save(toEntity(request)));
+        return categoryMapper.toResponse(categoryRepository.save(categoryMapper.toEntity(request)));
     }
 
     public void deleteCategory(UUID id)
@@ -33,18 +34,7 @@ public class CategoryService {
         categoryRepository.deleteById(id);
     }
 
-    private Category toEntity(CreateCategoryRequest request)
-    {
-        return Category.builder()
-                .name(request.name())
-                .color(request.color())
-                .build();
-    }
 
-    private CategoryResponse toResponse(Category category)
-    {
-        return new CategoryResponse(category.getId(), category.getName(), category.getColor());
-    }
 
 
 

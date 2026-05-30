@@ -1,5 +1,7 @@
 package dev.maciejfrackiewicz.task_manager.task;
 
+import dev.maciejfrackiewicz.task_manager.category.Category;
+import dev.maciejfrackiewicz.task_manager.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name="tasks")
+@Table(name = "tasks")
 
 @Getter
 @AllArgsConstructor
@@ -20,8 +22,12 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private UUID userId;
-    private UUID categoryId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
     private String title;
     private String description;
     @Enumerated(EnumType.STRING)
@@ -30,7 +36,7 @@ public class Task {
     private LocalDateTime createdAt;
 
     @PrePersist
-    protected void onCreate(){
+    protected void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
 

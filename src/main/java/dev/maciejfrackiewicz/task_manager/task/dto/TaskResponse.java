@@ -1,5 +1,7 @@
 package dev.maciejfrackiewicz.task_manager.task.dto;
 
+import dev.maciejfrackiewicz.task_manager.category.Category;
+import dev.maciejfrackiewicz.task_manager.category.dto.CategoryResponse;
 import dev.maciejfrackiewicz.task_manager.task.TaskStatus;
 
 import java.time.LocalDateTime;
@@ -9,7 +11,7 @@ public record TaskResponse (
         UUID id,
         String title,
         String description,
-        UUID categoryId,
+        CategoryResponse categoryReposne,
         TaskStatus status,
         LocalDateTime deadline,
         LocalDateTime createdAt

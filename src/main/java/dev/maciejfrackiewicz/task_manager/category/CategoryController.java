@@ -3,6 +3,7 @@ package dev.maciejfrackiewicz.task_manager.category;
 
 import dev.maciejfrackiewicz.task_manager.category.dto.CategoryResponse;
 import dev.maciejfrackiewicz.task_manager.category.dto.CreateCategoryRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,13 +25,13 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryResponse> createCategory(@RequestBody CreateCategoryRequest request) {
+    public ResponseEntity<CategoryResponse> createCategory(@Valid @RequestBody CreateCategoryRequest request) {
         CategoryResponse newCategory = categoryService.addCategory(request);
         return ResponseEntity.created(URI.create("api/categories/" + newCategory.id())).body(newCategory);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryResponse> updateCategory(@PathVariable UUID id, @RequestBody CreateCategoryRequest request) {
+    public ResponseEntity<CategoryResponse> updateCategory(@PathVariable UUID id, @Valid @RequestBody CreateCategoryRequest request) {
         CategoryResponse updatedCategory = categoryService.updateCategory(request);
         return ResponseEntity.ok().body(updatedCategory);
     }

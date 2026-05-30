@@ -3,6 +3,7 @@ package dev.maciejfrackiewicz.task_manager.user;
 
 import dev.maciejfrackiewicz.task_manager.user.dto.CreateUserRequest;
 import dev.maciejfrackiewicz.task_manager.user.dto.UserResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,13 +25,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest request) {
+    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
         UserResponse newUser = userService.addUser(request);
         return ResponseEntity.created(URI.create("api/users/" + newUser.id())).body(newUser);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable UUID id, @RequestBody CreateUserRequest request) {
+    public ResponseEntity<UserResponse> updateUser(@PathVariable UUID id, @Valid @RequestBody CreateUserRequest request) {
         UserResponse updatedUser = userService.updateUser(request);
         return ResponseEntity.ok().body(updatedUser);
     }

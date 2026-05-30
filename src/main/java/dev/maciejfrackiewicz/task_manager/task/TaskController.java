@@ -3,6 +3,7 @@ package dev.maciejfrackiewicz.task_manager.task;
 
 import dev.maciejfrackiewicz.task_manager.task.dto.CreateTaskRequest;
 import dev.maciejfrackiewicz.task_manager.task.dto.TaskResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,13 +25,13 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<TaskResponse> createTask(@RequestBody CreateTaskRequest request) {
+    public ResponseEntity<TaskResponse> createTask(@Valid @RequestBody CreateTaskRequest request) {
         TaskResponse newTask = taskService.addTask(request);
         return ResponseEntity.created(URI.create("api/tasks/" + newTask.id())).body(newTask);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TaskResponse> updateTask(@PathVariable UUID id, @RequestBody CreateTaskRequest request) {
+    public ResponseEntity<TaskResponse> updateTask(@PathVariable UUID id, @Valid @RequestBody CreateTaskRequest request) {
         TaskResponse updatedTask = taskService.updateTask(request);
         return ResponseEntity.ok().body(updatedTask);
     }

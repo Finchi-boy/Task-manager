@@ -6,9 +6,11 @@ import dev.maciejfrackiewicz.task_manager.task.dto.TaskResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -24,11 +26,19 @@ public class TaskController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping
+    public ResponseEntity<List<TaskResponse>> getTasks() {
+        UUID userId = (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok(taskService.getAllTasksByUserId(userId));
+
+    }
+
     @PostMapping
     public ResponseEntity<TaskResponse> createTask(@Valid @RequestBody CreateTaskRequest request) {
         TaskResponse newTask = taskService.addTask(request);
         return ResponseEntity.created(URI.create("api/tasks/" + newTask.id())).body(newTask);
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<TaskResponse> updateTask(@PathVariable UUID id, @Valid @RequestBody CreateTaskRequest request) {

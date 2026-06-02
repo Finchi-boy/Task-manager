@@ -3,7 +3,6 @@ package dev.maciejfrackiewicz.task_manager.task;
 import dev.maciejfrackiewicz.task_manager.category.Category;
 import dev.maciejfrackiewicz.task_manager.category.CategoryMapper;
 import dev.maciejfrackiewicz.task_manager.category.CategoryRepository;
-import dev.maciejfrackiewicz.task_manager.category.CategoryService;
 import dev.maciejfrackiewicz.task_manager.category.dto.CategoryResponse;
 import dev.maciejfrackiewicz.task_manager.task.dto.CreateTaskRequest;
 import dev.maciejfrackiewicz.task_manager.task.dto.TaskResponse;
@@ -13,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -34,6 +34,15 @@ public class TaskService {
 
     public TaskResponse updateTask(CreateTaskRequest request) {
         return toResponse(taskRepository.save(toEntity(request)));
+    }
+
+    public List<TaskResponse> getAllTasksByUserId(UUID id)
+    {
+        return taskRepository.findByUserId(id)
+                .stream()
+                .map(this::toResponse)
+                .toList();
+
     }
 
     public void deleteTask(UUID id) {

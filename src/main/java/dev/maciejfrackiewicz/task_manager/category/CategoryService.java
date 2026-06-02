@@ -5,6 +5,7 @@ import dev.maciejfrackiewicz.task_manager.category.dto.CreateCategoryRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -22,6 +23,11 @@ public class CategoryService {
     public Optional<CategoryResponse> getCategoryById(UUID id)
     {
         return categoryRepository.findById(id).map(categoryMapper::toResponse);
+    }
+
+    public List<CategoryResponse> getAllCategoriesByUserId(UUID id)
+    {
+        return categoryRepository.findByUserId(id).stream().map(categoryMapper::toResponse).toList();
     }
 
     public CategoryResponse updateCategory(CreateCategoryRequest request)
